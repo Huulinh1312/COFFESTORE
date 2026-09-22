@@ -6,6 +6,7 @@ const reviewController = require('../controllers/reviewController');
 // Routes
 router.post('/create', protect, reviewController.createReview);
 router.get('/product/:productId', reviewController.getProductReviews);
+router.get('/user', protect, reviewController.getUserReviews);
 router.get('/order/:orderId', protect, reviewController.getOrderForReview);
 router.delete('/:id', protect, reviewController.deleteReview);
 

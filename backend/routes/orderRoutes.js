@@ -25,6 +25,12 @@ router.get('/myorders', protect, async (req, res) => {
   }
 });
 
+router.get('/all', admin, orderController.getAllOrders);
+router.get('/analytics', admin, orderController.getAnalytics);
+router.get('/recent', admin, orderController.getRecentOrders);
+router.get('/count-by-status', admin, orderController.getCountByStatus);
+router.get('/stats', admin, orderController.getStats);
+
 // Lấy chi tiết đơn hàng
 router.get('/:id', orderController.getOrderById);
 
@@ -32,7 +38,6 @@ router.get('/:id', orderController.getOrderById);
 router.put('/cancel/:id', orderController.cancelOrder);
 
 // Admin routes
-router.get('/', admin, orderController.getAllOrders);
 router.put('/:id/status', admin, orderController.updateOrderStatus);
 
 module.exports = router;

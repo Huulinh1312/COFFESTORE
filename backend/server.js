@@ -5,7 +5,7 @@ const path = require('path');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const { notFound, errorHandler } = require('./middleware/errorMiddleware');
-const apiRoutes = require('./api'); // Chỉ import apiRoutes từ api.js
+const apiRoutes = require('./routes');
 
 // Load env vars
 dotenv.config();
@@ -14,7 +14,13 @@ const app = express();
 
 // Middleware
 app.use(cors({
-    origin: ['https://wolsom.onrender.com', 'https://mearstack-coffeestore.onrender.com'],
+    origin: [
+        'http://localhost:3000',
+        'http://localhost:5173',
+        'https://wolsom.onrender.com',
+        'https://mearstack-coffeestore.onrender.com',
+        'https://coffeestore-gamma.vercel.app'
+    ],
     credentials: true
 }));
 app.use(express.json());
@@ -31,7 +37,9 @@ app.use(notFound);
 app.use(errorHandler);
 
 // Connect to MongoDB and start server
-mongoose.connect(process.env.MONGODB_URL)
+const mongoUrl = process.env.MONGODB_URL || 'mongodb://127.0.0.1:27017/coffeestore';
+
+mongoose.connect(mongoUrl)
     .then(() => {
         console.log('MongoDB Connected');
         const PORT = process.env.PORT || 5000;
