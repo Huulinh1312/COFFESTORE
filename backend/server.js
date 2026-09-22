@@ -19,7 +19,7 @@ const allowedOrigins = [
     process.env.ADMIN_FRONTEND_URL,
     'https://wolsom.onrender.com',
     'https://mearstack-coffeestore.onrender.com',
-    'https://coffeestore-gamma.vercel.app'
+    'https://coffestore-mu.vercel.app'
 ].filter(Boolean);
 
 // Middleware
