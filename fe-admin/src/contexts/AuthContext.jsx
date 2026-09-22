@@ -9,15 +9,28 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const checkAuth = async () => {
+      const hashParams = new URLSearchParams(window.location.hash.slice(1));
+      const callbackToken = hashParams.get('token');
       const userData = localStorage.getItem('adminUser');
-      if (userData) {
-        const parsedUser = JSON.parse(userData);
+
+      if (callbackToken) {
+        localStorage.setItem('adminUser', JSON.stringify({ token: callbackToken }));
+        window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}`);
+      }
+
+      const storedUserData = callbackToken
+        ? { token: callbackToken }
+        : userData && JSON.parse(userData);
+      if (storedUserData) {
+        const parsedUser = storedUserData;
         if (parsedUser?.token) {
           try {
             const response = await api.get('/users/profile');
             // Kiểm tra role admin
             if (response.data.role === 'admin') {
-              setUser(parsedUser);
+              const authenticatedUser = { ...response.data, token: parsedUser.token };
+              setUser(authenticatedUser);
+              localStorage.setItem('adminUser', JSON.stringify(authenticatedUser));
             } else {
               logout();
             }

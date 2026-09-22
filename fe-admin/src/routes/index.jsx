@@ -10,7 +10,7 @@ const privateRoutes = [
   { path: "/products", element: Products },
   { path: "/orders", element: Reviews },
   { path: "/settings", element: Settings },
-  {path: "/login", element: Login},
+  { path: "/login", element: Login },
   
 ];
 

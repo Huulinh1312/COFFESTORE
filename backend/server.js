@@ -12,15 +12,19 @@ dotenv.config();
 
 const app = express();
 
+const allowedOrigins = [
+    'http://localhost:3000',
+    'http://localhost:5173',
+    process.env.USER_FRONTEND_URL,
+    process.env.ADMIN_FRONTEND_URL,
+    'https://wolsom.onrender.com',
+    'https://mearstack-coffeestore.onrender.com',
+    'https://coffeestore-gamma.vercel.app'
+].filter(Boolean);
+
 // Middleware
 app.use(cors({
-    origin: [
-        'http://localhost:3000',
-        'http://localhost:5173',
-        'https://wolsom.onrender.com',
-        'https://mearstack-coffeestore.onrender.com',
-        'https://coffeestore-gamma.vercel.app'
-    ],
+    origin: allowedOrigins,
     credentials: true
 }));
 app.use(express.json());

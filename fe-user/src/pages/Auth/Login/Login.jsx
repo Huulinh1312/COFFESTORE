@@ -25,7 +25,23 @@ const Login = () => {
   const handleLogin = async (values) => {
     try {
       const response = await api.post("/users/login", values);
-      login(response.data);
+      const userData = response.data;
+
+      if (userData.role === "admin") {
+        const adminUrl = import.meta.env.VITE_ADMIN_URL;
+        if (!adminUrl) {
+          setError("Chưa cấu hình địa chỉ trang quản trị");
+          return;
+        }
+
+        localStorage.removeItem("user");
+        window.location.replace(
+          `${adminUrl.replace(/\/$/, "")}/auth/callback#token=${encodeURIComponent(userData.token)}`
+        );
+        return;
+      }
+
+      login(userData);
       const from = location.state?.from || "/";
       navigate(from, { replace: true });
     } catch (error) {
