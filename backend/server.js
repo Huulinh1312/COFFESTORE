@@ -47,15 +47,14 @@ app.use('/api', apiRoutes);
 app.use(notFound);
 app.use(errorHandler);
 
-// Connect to MongoDB and start server
+// Start HTTP server before connecting to MongoDB so Render can detect the port.
 const mongoUrl = process.env.MONGODB_URL || 'mongodb://127.0.0.1:27017/coffeestore';
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
 
 mongoose.connect(mongoUrl)
-    .then(() => {
-        console.log('MongoDB Connected');
-        const PORT = process.env.PORT || 5000;
-        app.listen(PORT, () => {
-            console.log(`Server running on port ${PORT}`);
-        });
-    })
+    .then(() => console.log('MongoDB Connected'))
     .catch(err => console.error(`MongoDB connection error: ${err.message}`));
