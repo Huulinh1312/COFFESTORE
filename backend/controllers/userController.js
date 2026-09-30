@@ -27,13 +27,15 @@ const register = async (req, res, next) => {
             return res.status(400).json({ message: 'User already exists' });
         }
 
-        const user = await User.create({ name, email, password, phone, role });
+        const allowedRole = req.user?.role === 'admin' ? role : 'user';
+        const user = await User.create({ name, email, password, phone, role: allowedRole });
         res.status(201).json({ ...publicUser(user), token: createToken(user) });
     } catch (error) {
-                const allowedRole = req.user?.role === 'admin' ? role : 'user';
-                const user = await User.create({ name, email, password, phone, role: allowedRole });
+        next(error);
     }
 };
+
+const registerAdmin = register;
 
 const login = async (req, res, next) => {
     try {
@@ -115,7 +117,7 @@ const updateUser = async (req, res, next) => {
 
 module.exports = {
     register,
-        registerAdmin,
+    registerAdmin,
     login,
     getUserProfile,
     updateUserProfile,
