@@ -56,7 +56,7 @@ const Signin = () => {
     } catch (error) {
       setError(
         error.code === "ECONNABORTED"
-          ? "Backend đang khởi động hoặc không phản hồi. Vui lòng thử lại sau ít giây."
+          ? "Backend không phản hồi sau 90 giây. Hãy mở backend Render trước, chờ chạy xong rồi thử lại."
           : error.response?.data?.message || "Đăng ký thất bại"
       );
     } finally {
