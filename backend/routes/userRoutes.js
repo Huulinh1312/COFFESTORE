@@ -6,6 +6,7 @@ const { protect, admin } = require('../middleware/authMiddleware');
 // Public routes
 router.post('/register', userController.register);
 router.post('/login', userController.login);
+router.post('/admin', protect, admin, userController.registerAdmin);
 
 // Protected routes (đăng nhập mới truy cập được)
 router.get('/profile', protect, userController.getUserProfile); 

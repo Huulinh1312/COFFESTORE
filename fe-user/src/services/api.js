@@ -14,9 +14,11 @@ api.interceptors.request.use(
   (config) => {
     const userData = localStorage.getItem('user');
     if (userData) {
-      const user = JSON.parse(userData);
-      if (user?.token) {
-        config.headers.Authorization = `Bearer ${user.token}`;
+      try {
+        const user = JSON.parse(userData);
+        if (user?.token) config.headers.Authorization = `Bearer ${user.token}`;
+      } catch {
+        localStorage.removeItem('user');
       }
     }
     return config;
@@ -32,7 +34,10 @@ api.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       localStorage.removeItem('user');
-      window.location.href = '/login';
+      localStorage.removeItem('user');
+      if (window.location.pathname.startsWith('/admin')) {
+        window.location.href = '/login';
+      }
     }
     return Promise.reject(error);
   }

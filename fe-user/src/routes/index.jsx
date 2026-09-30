@@ -11,6 +11,12 @@ import ThankYou from "../pages/Thankyou";
 import HistoryOrder from "../pages/HistoryOrder";
 import ProtectedRoute from "../components/ProtectedRoute";
 import Error404 from "../pages/Error404";
+import Dashboard from "../admin/pages/Dashboard";
+import Customers from "../admin/pages/Customers";
+import Products from "../admin/pages/Products";
+import Orders from "../admin/pages/Orders";
+import Settings from "../admin/pages/Settings";
+import AdminProtectedRoute from "../admin/components/ProtectedRoute";
 
 const privateRoute = [
     { path: "/", element: <Home /> },
@@ -27,4 +33,15 @@ const privateRoute = [
     { path: "*", element: <Error404 /> },
 ];
 
-export { privateRoute };
+const adminRoutes = [
+    { path: "/admin/dashboard", element: <Dashboard /> },
+    { path: "/admin/customers", element: <Customers /> },
+    { path: "/admin/products", element: <Products /> },
+    { path: "/admin/orders", element: <Orders /> },
+    { path: "/admin/settings", element: <Settings /> },
+].map((route) => ({
+    ...route,
+    element: <AdminProtectedRoute>{route.element}</AdminProtectedRoute>,
+}));
+
+export { privateRoute, adminRoutes };

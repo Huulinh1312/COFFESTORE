@@ -1,8 +1,8 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaCog, FaUserCircle } from "react-icons/fa"; 
-import { useAuth } from "../contexts/AuthContext";
-import Logo from "../assets/food-logo.png";
+import { useAuth } from "../../contexts/AuthContext";
+import Logo from "../../assets/food-logo.png";
 
 const Navbar = () => {
   const { user, logout } = useAuth();
@@ -34,7 +34,7 @@ const Navbar = () => {
           <ul className="flex gap-8 text-lg font-medium items-center">
             <li>
               <Link
-                to="/dashboard"
+                to="/admin/dashboard"
                 className="relative hover:text-[#7a4b27] transition-colors duration-300 after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-0 after:h-[2px] after:bg-[#7a4b27] after:transition-all after:duration-300 hover:after:w-full"
               >
                 Tổng Quan
@@ -42,7 +42,7 @@ const Navbar = () => {
             </li>
             <li>
               <Link
-                to="/customers"
+                to="/admin/customers"
                 className="relative hover:text-[#7a4b27] transition-colors duration-300 after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-0 after:h-[2px] after:bg-[#7a4b27] after:transition-all after:duration-300 hover:after:w-full"
               >
                 Khách Hàng
@@ -50,7 +50,7 @@ const Navbar = () => {
             </li>
             <li>
               <Link
-                to="/products"
+                to="/admin/products"
                 className="relative hover:text-[#7a4b27] transition-colors duration-300 after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-0 after:h-[2px] after:bg-[#7a4b27] after:transition-all after:duration-300 hover:after:w-full"
               >
                 Sản Phẩm
@@ -58,7 +58,7 @@ const Navbar = () => {
             </li>
             <li>
               <Link
-                to="/orders"
+                to="/admin/orders"
                 className="relative hover:text-[#7a4b27] transition-colors duration-300 after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-0 after:h-[2px] after:bg-[#7a4b27] after:transition-all after:duration-300 hover:after:w-full"
               >
                 Đơn Hàng
@@ -83,7 +83,7 @@ const Navbar = () => {
                     <p className="text-xs text-gray-500">{user.email}</p>
                   </div>
                   <Link
-                    to="/settings"
+                    to="/admin/settings"
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
                   >
                     Cài đặt
@@ -106,7 +106,7 @@ const Navbar = () => {
             )}
 
             <Link
-              to="/settings"
+              to="/admin/settings"
               className="text-[#3d1f00] text-2xl hover:text-[#7a4b27] transition"
             >
               <FaCog />

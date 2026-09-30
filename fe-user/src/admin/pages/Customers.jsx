@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import api from "../services/api";
+import api from "../../services/api";
 import { format, isThisMonth } from "date-fns"; // Thêm isThisMonth
 import { vi } from "date-fns/locale";
 
@@ -134,7 +134,7 @@ const Customers = () => {
         return;
       }
 
-      const response = await api.post("/users/register", newCustomer);
+        const response = await api.post("/users/admin", newCustomer);
       const newCustomerWithTimestamp = {
         ...response.data,
         createdAt: new Date().toISOString(),

@@ -8,20 +8,19 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Kiểm tra token khi component mount
     const checkAuth = async () => {
       const userData = localStorage.getItem('user');
       if (userData) {
-        const parsedUser = JSON.parse(userData);
-        if (parsedUser?.token) {
-          try {
-            // Verify token với backend
-            const response = await api.get('/users/profile');
-            setUser(parsedUser);
-          } catch (error) {
-            // Nếu token không hợp lệ, logout
-            logout();
-          }
+        try {
+          const parsedUser = JSON.parse(userData);
+          if (!parsedUser?.token) throw new Error('Missing token');
+
+          const response = await api.get('/users/profile');
+          const authenticatedUser = { ...response.data, token: parsedUser.token };
+          setUser(authenticatedUser);
+          localStorage.setItem('user', JSON.stringify(authenticatedUser));
+        } catch (error) {
+          logout();
         }
       }
       setLoading(false);

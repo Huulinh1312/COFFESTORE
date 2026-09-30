@@ -12,7 +12,7 @@ import {
   Legend,
   Filler, // Thêm import Filler plugin
 } from "chart.js";
-import api from "../services/api";
+import api from "../../services/api";
 import { format } from "date-fns";
 import { vi } from "date-fns/locale";
 
@@ -291,7 +291,7 @@ const Dashboard = () => {
         <div className="bg-white shadow-md rounded-lg p-6">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-semibold text-[#3d1f00]">Đơn Hàng Gần Đây</h2>
-            <Link to="/orders" className="text-blue-600 hover:text-blue-800 text-sm">
+            <Link to="/admin/orders" className="text-blue-600 hover:text-blue-800 text-sm">
               Xem tất cả
             </Link>
           </div>
@@ -324,7 +324,7 @@ const Dashboard = () => {
       <div className="bg-white shadow-md rounded-lg p-6">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold text-[#3d1f00]">Sản Phẩm Bán Chạy</h2>
-          <Link to="/products" className="text-blue-600 hover:text-blue-800 text-sm">
+          <Link to="/admin/products" className="text-blue-600 hover:text-blue-800 text-sm">
             Tất cả sản phẩm
           </Link>
         </div>

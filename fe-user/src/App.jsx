@@ -1,7 +1,8 @@
 import React, { Fragment } from "react";
 import { Route, Routes } from "react-router-dom";
-import { privateRoute } from "./routes";
+import { adminRoutes, privateRoute } from "./routes";
 import DefaultLayout from "./layouts/DefaultLayout";
+import AdminLayout from "./admin/layout/DefaultLayout";
 import { AuthProvider } from './contexts/AuthContext';
 import { CartProvider } from './contexts/CartContext';
 import AOS from "aos"; // Thư viện animation on scroll (AOS) để tạo hiệu ứng khi cuộn trang
@@ -22,11 +23,13 @@ const App = () => {
     <AuthProvider>
       <CartProvider>
         <Routes>
-          {privateRoute.map((route, index) => {
+          {[...privateRoute, ...adminRoutes].map((route, index) => {
             let Layout = DefaultLayout;
 
             if (route.layout === null) {
               Layout = Fragment;
+            } else if (route.path.startsWith("/admin/")) {
+              Layout = AdminLayout;
             }
 
             return (

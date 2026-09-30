@@ -30,7 +30,8 @@ const register = async (req, res, next) => {
         const user = await User.create({ name, email, password, phone, role });
         res.status(201).json({ ...publicUser(user), token: createToken(user) });
     } catch (error) {
-        next(error);
+                const allowedRole = req.user?.role === 'admin' ? role : 'user';
+                const user = await User.create({ name, email, password, phone, role: allowedRole });
     }
 };
 
@@ -114,6 +115,7 @@ const updateUser = async (req, res, next) => {
 
 module.exports = {
     register,
+        registerAdmin,
     login,
     getUserProfile,
     updateUserProfile,
