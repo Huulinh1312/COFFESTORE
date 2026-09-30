@@ -6,6 +6,8 @@ import api from "../../../services/api";
 const Signin = () => {
   const navigate = useNavigate();
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -24,6 +26,8 @@ const Signin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+    setSuccess("");
     const { name, email, password, confirmPassword, agree } = form;
 
     // Kiểm tra điều kiện
@@ -37,6 +41,7 @@ const Signin = () => {
     }
 
     try {
+      setLoading(true);
       // Gọi API đăng ký
       const response = await api.post("/users/register", {
         name,
@@ -45,12 +50,17 @@ const Signin = () => {
       });
 
       if (response.data) {
-        // Đăng ký thành công, chuyển đến trang đăng nhập
-        alert("Đăng ký thành công!");
-        navigate("/login");
+        setSuccess("Đăng ký thành công. Đang chuyển đến trang đăng nhập...");
+        setTimeout(() => navigate("/login"), 1000);
       }
     } catch (error) {
-      setError(error.response?.data?.message || "Đăng ký thất bại");
+      setError(
+        error.code === "ECONNABORTED"
+          ? "Backend đang khởi động hoặc không phản hồi. Vui lòng thử lại sau ít giây."
+          : error.response?.data?.message || "Đăng ký thất bại"
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -68,6 +78,11 @@ const Signin = () => {
         {error && (
           <div className="mb-4 text-red-500 text-center bg-red-100 p-2 rounded">
             {error}
+          </div>
+        )}
+        {success && (
+          <div className="mb-4 text-green-700 text-center bg-green-100 p-2 rounded">
+            {success}
           </div>
         )}
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -121,9 +136,10 @@ const Signin = () => {
           </label>
           <button
             type="submit"
+            disabled={loading}
             className="w-full bg-[#c29669] text-white font-bold py-3 rounded-lg hover:bg-[#a9794c] transition shadow-md"
           >
-            Đăng ký ngay
+            {loading ? "Đang xử lý..." : "Đăng ký ngay"}
           </button>
         </form>
         <p className="mt-6 text-sm text-center">

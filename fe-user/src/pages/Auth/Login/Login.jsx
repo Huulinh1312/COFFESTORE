@@ -11,6 +11,7 @@ const Login = () => {
     password: "",
   });
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const { login } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
@@ -23,6 +24,8 @@ const Login = () => {
   };
 
   const handleLogin = async (values) => {
+    setError("");
+    setLoading(true);
     try {
       const response = await api.post("/users/login", values);
       const userData = response.data;
@@ -32,7 +35,13 @@ const Login = () => {
         || (userData.role === "admin" ? "/admin/dashboard" : "/");
       navigate(from, { replace: true });
     } catch (error) {
-      setError(error.response?.data?.message || "Đăng nhập thất bại");
+      setError(
+        error.code === "ECONNABORTED"
+          ? "Backend đang khởi động hoặc không phản hồi. Vui lòng thử lại sau ít giây."
+          : error.response?.data?.message || "Đăng nhập thất bại"
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -84,9 +93,10 @@ const Login = () => {
             />
             <button
               type="submit"
+              disabled={loading}
               className="w-full bg-[#c29669] text-white font-bold py-3 rounded-lg hover:bg-[#a9794c] transition shadow-md"
             >
-              Đăng nhập
+              {loading ? "Đang xử lý..." : "Đăng nhập"}
             </button>
           </div>
           <p className="mt-6 text-sm text-center">
