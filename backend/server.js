@@ -22,11 +22,19 @@ const allowedOrigins = [
     'https://coffestore-mu.vercel.app'
 ].filter(Boolean);
 
-// Middleware
-app.use(cors({
-    origin: allowedOrigins,
+const corsOptions = {
+    origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin)) {
+            return callback(null, true);
+        }
+        return callback(new Error('Origin not allowed by CORS'));
+    },
     credentials: true
-}));
+};
+
+// Middleware
+app.use(cors(corsOptions));
+app.options(/.*/, cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -35,6 +43,10 @@ app.get('/', (req, res) => {
         message: 'CoffeeStore backend is running',
         api: '/api'
     });
+});
+
+app.get('/api/health', (req, res) => {
+    res.json({ message: 'API is reachable', database: mongoose.connection.readyState === 1 });
 });
 
 // Set static folder for uploads
